@@ -1,4 +1,5 @@
+import { Login } from "@/components/auth/Login";
 
 export default function Page() {
-  return <div>This is landing page</div>;
+  return <div><Login /></div>;
 }
