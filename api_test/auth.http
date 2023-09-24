@@ -1,0 +1,17 @@
+### Create user
+POST https://eventmakers-api.vercel.app/api/auth/register 
+
+{
+    "name":"Ibrahim Aji",
+    "email":"ibrahim.aji@Live.com",
+    "password":"12345"
+}
+
+### Login User
+
+POST https://eventmakers-api.vercel.app/api/auth/login
+
+{
+    "email":"ibrahim.aji@Live.com",
+    "password":"12345"
+}
