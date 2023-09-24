@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 export const useLogin = () => {
   const initialLoginData = {
@@ -19,6 +20,7 @@ export const useLogin = () => {
       body:JSON.stringify({email,password})
     })
     const data = await res.json();
+    Cookies.set("token",data.token);
     console.log(data);
   };
 
