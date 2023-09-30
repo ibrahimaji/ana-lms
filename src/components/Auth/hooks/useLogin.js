@@ -1,8 +1,10 @@
 
 import { useState } from "react";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 export const useLogin = () => {
+  const [loading,setLoading] = useState(false);
   const initialLoginData = {
     email: "",
     password: "",
@@ -14,15 +16,29 @@ export const useLogin = () => {
     setLoginData({ ...loginData, [name]: value });
   };
   const handleLogin = async () => {
+    setLoading(true);
+    toast.loading("Logging in...")
     const {email, password} = loginData;
-    const res = await fetch("https://eventmakers-api.vercel.app/api/auth/login",{
+    const res = await fetch("/api/v1/auth/login",{
       method:"POST",
       body:JSON.stringify({email,password})
     })
-    const data = await res.json();
-    Cookies.set("token",data.token);
+    const {data, error}= await res.json();
+    // Cookies.set("token",data.token);
+    
+    //handling error
+    if(error){
+      setLoading(false)
+      toast.remove();
+      toast.error(error);
+      console.log(error);
+      return;
+    }
+    setLoading(false)
+    toast.remove();
+    toast.success("Login Success!")
     console.log(data);
   };
 
-  return { loginData, handleEventChange, handleLogin };
+  return { loading, loginData, handleEventChange, handleLogin };
 };
