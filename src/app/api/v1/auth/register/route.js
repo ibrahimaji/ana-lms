@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 import bcrypt from "bcrypt";
+import { Prisma } from "@prisma/client";
 
 export async function GET(){
     try{
@@ -8,8 +9,7 @@ export async function GET(){
         return NextResponse.json({data:user});
     }
     catch(error){
-        console.log(error);
-        return NextResponse.json({message:"Error"}, {status:500})
+        return NextResponse.json({error}, {status:500})
     }
 }
 
@@ -25,11 +25,16 @@ export async function POST(req) {
       },
     });
     return NextResponse.json(
-      { message: "User created succesfully" },
+      {data:createUser, message: "User sukses dibuat!" },
       { status: 201 }
     );
   } catch (error) {
+    if(error instanceof Prisma.PrismaClientKnownRequestError){
+      if(error.code === 'P2002'){
+      console.log(error);
+      }
+    }
     console.log(error);
-    return NextResponse.json({ message: "Error" }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
